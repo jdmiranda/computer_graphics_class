@@ -64,7 +64,7 @@ function init() {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 
-//    initGui();
+    initGui();
 }
 
 function updateObject(objectType) {
@@ -124,6 +124,5 @@ function addToDOM() {
 
 init();
 createScene();
-initGui();
 addToDOM();
 animate();
