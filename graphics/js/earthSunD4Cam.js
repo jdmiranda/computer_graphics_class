@@ -84,8 +84,10 @@ function makeUpdateRevolution(orbit) {
 }
 
 
-
-function createEarth(radius=2, rps=0.1, earthTexture='../assets/earth_4k.jpg') {
+// FOR GITHUB:
+// USE 'assets/earth_4k.jpg'
+// Otherwise: '../assets/earth_4k.jpg'
+function createEarth(radius=2, rps=0.1, earthTexture='assets/earth_4k.jpg') {
     let geom = new THREE.SphereGeometry(radius, 48, 48);
     let texture = getTexture(earthTexture);
     let matArgs = {map: texture,  specular: 0xFF9999, shininess: 10};
