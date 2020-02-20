@@ -102,12 +102,18 @@ function runTween(obj) {
         .to({z: Math.PI / 6});
     let visibility_tween = new TWEEN.Tween(secondMat)
         .to({opacity: 1.0}, 1000);
-    scale_tween.chain(translate_tween);
-    translate_tween.chain(rotation_tween);
+    // scale_tween.chain(translate_tween);
+    // translate_tween.chain(rotation_tween);
     if (obj === axes) {
-        rotation_tween.chain(visibility_tween);
+        translate_tween.chain(rotation_tween);
+        rotation_tween.chain(scale_tween);
+        scale_tween.chain(visibility_tween);
+        translate_tween.start();
+    } else {
+        scale_tween.chain(rotation_tween);
+        rotation_tween.chain(translate_tween);
+        scale_tween.start();
     }
-    scale_tween.start();
 }
 
 
