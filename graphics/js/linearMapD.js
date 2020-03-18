@@ -38,6 +38,14 @@ function createGrids(basis1, basis2, basis3) {
     transformedGrid.matrixAutoUpdate = false;
     root.add(transformedGrid);
 
+    // determinant box
+    let boxMatargs = {transparent: true, color: 0x6600cc, opacity: 0.6};
+    let boxMat = new THREE.MeshLambertMaterial(boxMatargs);
+    let boxGeom = new THREE.BoxGeometry(1, 1, 1);
+    let box = new THREE.Mesh(boxGeom, boxMat);
+    box.position.set(0.5, 0.5, 0.5);
+    transformedGrid.add(box);
+
     // markers for transformed basis vectors
     const zip = (a1, a2) => a1.map((k, i) => [k, a2[i]]);
     const basisVectors = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
