@@ -45,11 +45,6 @@ function createGrids(basis1, basis2, basis3) {
     transformedObject3D.matrix.copy(M);
     transformedObject3D.matrixAutoUpdate = false;
 
-    // transform grid
-    transformedGrid.matrix.copy(M);
-    transformedGrid.matrixAutoUpdate = false;
-    root.add(transformedGrid);
-
     // determinant box
     let boxMatargs = {transparent: true, color: 0x1562c9, opacity: 0.8};
     let boxMat = new THREE.MeshLambertMaterial(boxMatargs);
