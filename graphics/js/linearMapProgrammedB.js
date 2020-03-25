@@ -109,7 +109,7 @@ function initGui() {
     gui.add(controls, 'basis1').listen();
     gui.add(controls, 'basis2').listen();
     gui.add(controls, 'basis3').listen();
-    let mapTypes = ['identity','scale','reflection','rotation90','rotation45','shear','rotationA90','rotationA45','rotationA180','reflectionA', 'shearA45','shearB45'];
+    let mapTypes = ['identity','scale','reflection','rotation90','rotation45','shear','rotationA90','rotationA45','rotationA180','reflectionA', 'shearA45'];
     gui.add(controls, 'mapTypes', mapTypes).onChange(updateMap);
     gui.add(controls, 'grid').name('show grid').onChange(toggleGrid);
     gui.add(controls, 'Go');
@@ -132,8 +132,6 @@ function updateMap(mapType) {
         'reflectionA': ['0.333,-0.667,-0.667','-0.667,0.333,-0.667','-0.667,-0.667,0.333'],
         // shear 45 degrees xy-plane
         'shearA45': ['1,0,0','0,1,0','0.448,0.894,1'],
-        // shear 45 degrees x+y+z=0 plane
-        'shearB45': ['0.592,0,0.408','-0.408,1,0.408','-0.408,0,1.408']
     };
     let map = maps[mapType];
     controls.basis1 = map[0];
