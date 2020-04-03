@@ -14,7 +14,7 @@ let bandSphere;
 
 
 function createScene() {
-    let bandArgs = {n: 40, minTheta: Math.PI/800, maxTheta: Math.PI/50, rad: 4, segments: 96, density: 10};
+    let bandArgs = {n: 60, minTheta: Math.PI/800, maxTheta: Math.PI/50, rad: 4, segments: 96, density: 10};
     let matArgs = {transparent: true, opacity: 0.7, color: getRandomColor()};
     bandArgs.material = new THREE.MeshLambertMaterial(matArgs);
     bandSphere = createBandedSphere(bandArgs);
@@ -157,7 +157,7 @@ function reset() {
         scene.remove(bandSphere);
         bansSphere = null;
     }
-    let bandArgs = {n: 40, minTheta: Math.PI/800, maxTheta: Math.PI/50, rad: 4, segments: 96, density: 10};
+    let bandArgs = {n: 60, minTheta: Math.PI/800, maxTheta: Math.PI/50, rad: 4, segments: 96, density: 10};
     let matArgs = {transparent: true, opacity: controls.opacity, color: getRandomColor()};
     bandArgs.material = new THREE.MeshLambertMaterial(matArgs);
     bandSphere = createBandedSphere(bandArgs);
