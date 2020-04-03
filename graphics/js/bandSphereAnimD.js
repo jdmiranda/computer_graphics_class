@@ -131,6 +131,7 @@ var controls = new function() {
     this.rpsB = 0.0;
     this.rpsZA = 0.0;
     this.rpsZB = 0.0;
+    this.opacity = 0.7;
     this.Reset = reset;
 }
 
@@ -142,6 +143,7 @@ function initGui() {
     gui.add(controls, 'rpsB', -0.001, 0.001).step(0.0002).listen().onChange(updateBands);
     gui.add(controls, 'rpsZA', -0.01, 0.01).step(0.001).listen().onChange(updateBands);
     gui.add(controls, 'rpsZB', -0.001, 0.001).step(0.0002).listen().onChange(updateBands);
+    gui.add(controls, 'opacity', 0.1, 1.0).step(0.1).onChange(updateOpacity);
     gui.add(controls, 'Reset');
 }
 
@@ -156,7 +158,7 @@ function reset() {
         bansSphere = null;
     }
     let bandArgs = {n: 40, minTheta: Math.PI/800, maxTheta: Math.PI/50, rad: 4, segments: 96, density: 10};
-    let matArgs = {transparent: true, opacity: 0.7, color: getRandomColor()};
+    let matArgs = {transparent: true, opacity: controls.opacity, color: getRandomColor()};
     bandArgs.material = new THREE.MeshLambertMaterial(matArgs);
     bandSphere = createBandedSphere(bandArgs);
     scene.add(bandSphere);
@@ -169,6 +171,14 @@ function updateBands() {
     let rpsZA = controls.rpsZA;
     let rpsZB = controls.rpsZB;
     moveChildren(bandSphere, makeArithRotator(0, rpsA, rpsB), makeArithRotator(2, rpsZA, rpsZB, "rpsz"));
+}
+
+function updateOpacity() {
+    let opacity = controls.opacity;
+    bandSphere.children.forEach (function (c) {
+        let mat = c.material;
+        mat.opacity = opacity;
+    })
 }
 
 
