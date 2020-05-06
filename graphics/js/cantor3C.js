@@ -24,9 +24,9 @@ function createScene() {
     cantor = makeCantor3(retainSierpinskiCube, nbrLevels, mat, len);
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
     light.position.set(0, 0, 40);
-    let light2 = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
-    light2.position.set(20, 40, -40);
-    let ambientLight = new THREE.AmbientLight(0x222222);
+    let light2 = new THREE.PointLight(0xFFFFFF, 0.4, 1000 );
+    light2.position.set(20, 40, -20);
+    let ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
@@ -34,13 +34,13 @@ function createScene() {
 }
 
 
-function makeCantor3(retainF, levels, mat, len=1) {
-    if (levels == 0) {
+function makeCantor3(retainF, level, mat, len=1) {
+    if (level == 0) {
         let geom = new THREE.BoxGeometry(len, len, len);
         return new THREE.Mesh(geom, mat);
     }
     else {
-        let cantor = makeCantor3(retainF, levels-1, mat, len);
+        let cantor = makeCantor3(retainF, level-1, mat, len);
         let root = new THREE.Object3D();
         root.scale.set(1/3, 1/3, 1/3);
         for (x of [-len, 0, len]) {
@@ -63,18 +63,17 @@ function retainSierpinskiCube(x, y, z, len) {
     return (Math.abs(x) + Math.abs(y) + Math.abs(z)) > len;
 }
 
-// sierpinski carpet
 function retainMoselySnowflake(x, y, z, len) {
     return (Math.abs(x) + Math.abs(y) + Math.abs(z)) < 3 * len;
 }
 
-function retainSierpinskiCubeAlt(x, y, z, len) {
+function retainMoselySnowflakeLight(x, y, z, len) {
     let val = Math.abs(x) + Math.abs(y) + Math.abs(z);
-    return (val > len) || (val == 0);
+    return (val < 3 * len) && (val > 0);
 }
 
 
-function retainMoselySnowflakeAlt(x, y, z, len) {
+function retainSMSnowflakeAlt(x, y, z, len) {
     let val = Math.abs(x) + Math.abs(y) + Math.abs(z);
     return (Math.abs(x) + Math.abs(y) + Math.abs(z)) == 2 * len;
 }
@@ -94,9 +93,9 @@ var controls = new function() {
 function initGui() {
     var gui = new dat.GUI();
     gui.add(controls, 'nbrLevels', 0, 4).step(1).onChange(update);
-    gui.add(controls, 'opacity', 0.1, 1.0).step(0.1);
+//    gui.add(controls, 'opacity', 0.1, 1.0).step(0.1);
     gui.addColor(controls, 'color');
-    let objectTypes = ['Sierpinski cube', 'Mosely snowflake', 'SM snowflake'];
+    let objectTypes = ['Sierpinski cube', 'Mosely snowflake', 'Light Mosely snowflake', 'SM snowflake'];
     gui.add(controls, 'type', objectTypes).onChange(update);
 }
 
@@ -110,6 +109,9 @@ function update() {
             break;
         case 'Mosely snowflake':
             f = retainMoselySnowflake;
+            break;
+        case 'Light Mosely snowflake':
+            f = retainMoselySnowflakeLight;
             break;
         case 'SM snowflake':
             f = retainSMSnowflake;
