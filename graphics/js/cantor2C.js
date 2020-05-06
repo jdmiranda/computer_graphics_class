@@ -46,13 +46,13 @@ function makeFloor() {
 
 
 
-function makeCantor(retainF, levels, mat, len=10) {
-    if (levels == 0) {
-        let geom = new THREE.BoxGeometry(len, 1, len);
+function makeCantor(retainF, level, mat, len=10) {
+    if (level == 0) {
+        let geom = new THREE.BoxGeometry(len, 0.4, len);
         return new THREE.Mesh(geom, mat);
     }
     else {
-        let cantor = makeCantor(retainF, levels-1, mat, len);
+        let cantor = makeCantor(retainF, level-1, mat, len);
         let root = new THREE.Object3D();
         root.scale.set(1/3, 1, 1/3);
         for (x of [-len, 0, len]) {
