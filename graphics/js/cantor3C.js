@@ -1,5 +1,5 @@
 /***********
- * cantor3A.js
+ * cantor3C.js
  * M. Laszlo
  * 3D Cantor set (Sierpinski sponge) with GUI
  * April 2020
@@ -68,6 +68,21 @@ function retainMoselySnowflake(x, y, z, len) {
     return (Math.abs(x) + Math.abs(y) + Math.abs(z)) < 3 * len;
 }
 
+function retainSierpinskiCubeAlt(x, y, z, len) {
+    let val = Math.abs(x) + Math.abs(y) + Math.abs(z);
+    return (val > len) || (val == 0);
+}
+
+
+function retainMoselySnowflakeAlt(x, y, z, len) {
+    let val = Math.abs(x) + Math.abs(y) + Math.abs(z);
+    return (Math.abs(x) + Math.abs(y) + Math.abs(z)) == 2 * len;
+}
+
+function retainSMSnowflake(x, y, z, len) {
+    return retainSierpinskiCube(x, y, z, len) && retainMoselySnowflake(x, y, z, len);
+}
+
 
 var controls = new function() {
     this.nbrLevels = 2;
@@ -81,14 +96,25 @@ function initGui() {
     gui.add(controls, 'nbrLevels', 0, 4).step(1).onChange(update);
     gui.add(controls, 'opacity', 0.1, 1.0).step(0.1);
     gui.addColor(controls, 'color');
-    let objectTypes = ['Sierpinski cube', 'Mosely snowflake'];
+    let objectTypes = ['Sierpinski cube', 'Mosely snowflake', 'SM snowflake'];
     gui.add(controls, 'type', objectTypes).onChange(update);
 }
 
 function update() {
     if (cantor)
         scene.remove(cantor);
-    let f = controls.type === 'Sierpinski cube' ? retainSierpinskiCube : retainMoselySnowflake;
+    let f = null;
+    switch (controls.type) {
+        case 'Sierpinski cube': 
+            f = retainSierpinskiCube;
+            break;
+        case 'Mosely snowflake':
+            f = retainMoselySnowflake;
+            break;
+        case 'SM snowflake':
+            f = retainSMSnowflake;
+            break
+    }
     cantor = makeCantor3(f, controls.nbrLevels, mat, len);    
     scene.add(cantor);
 }
