@@ -110,28 +110,27 @@ function updateShading(shadingType) {
         case 'flat':
             matLambert.flatShading = true;
             matLambertSphere.flatShading = true;
-            matLambert.needsUpdate = true;
-            matLambertSphere.needsUpdate = true;
-            geom.computeFlatVertexNormals();
-            sphereGeom.computeFlatVertexNormals();
             mesh.material = matLambert;
-            sphereMesh.material = matLambertSphere;             
+            sphereMesh.material = matLambertSphere; 
+            geom.computeFlatVertexNormals();
+            sphereGeom.computeFlatVertexNormals();            
             break;
         case 'smooth':        
             matLambert.flatShading = false;
             matLambertSphere.flatShading = false;
-            matLambert.needsUpdate = true;
-            matLambertSphere.needsUpdate = true;
             mesh.material = matLambert; 
             sphereMesh.material = matLambertSphere;
             geom.computeVertexNormals();
             sphereGeom.computeVertexNormals();
             break;
-        case 'Phong':
-            matPhong.needsUpdate = true;            
+        case 'Phong':     
             mesh.material = matPhong;
             sphereMesh.material = matPhongSphere;
+            geom.computeVertexNormals();
+            sphereGeom.computeVertexNormals();
             break;
+        mesh.material.needsUpdate = true;
+        sphereMesh.material.needsUpdate = true;        
     }
 }
 
