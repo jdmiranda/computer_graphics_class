@@ -38,14 +38,15 @@ function getRandomColor(minSaturation, minLightness, maxLightness) {
   return new THREE.Color().setHSL(hue, sat, lit);
 }
 
-let colorVals = [0xffffff, 0xffff66, 0xff66ff, 0x66ffff, 0xff6666, 0x66ff66, 0x6666ff];
+// let colorVals = [0xffffff, 0xffff66, 0xff66ff, 0x66ffff, 0xff6666, 0x66ff66, 0x6666ff];
 
-function getRandomBrightColor() {
-  let color = new THREE.Color();
-  let i = getRandomInt(0, 6);
-  color.setHex((Math.random()/2 + 0.5) * colorVals[i]);
-  return color;
-}
+// function getRandomBrightColor() {
+//   let color = new THREE.Color();
+//   let i = getRandomInt(0, 6);
+//   color.setHex((Math.random()/2 + 0.5) * colorVals[i]);
+//   console.log(Math.random().toString(2))
+//   return color;
+// }
 
 
 function rpsToRadians(rps, t) {
