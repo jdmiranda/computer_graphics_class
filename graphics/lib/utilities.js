@@ -38,7 +38,7 @@ function getRandomColor(minSaturation, minLightness, maxLightness) {
   return new THREE.Color().setHSL(hue, sat, lit);
 }
 
-let colorVals = [0xffffff, 0xffff66, 0xff66ff, 0x66ffff, 0xff66666, 0x66ff66, 0x6666ff];
+let colorVals = [0xffffff, 0xffff66, 0xff66ff, 0x66ffff, 0xff6666, 0x66ff66, 0x6666ff];
 
 function getRandomBrightColor() {
   let color = new THREE.Color();
