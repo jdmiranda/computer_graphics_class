@@ -96,7 +96,7 @@ function updateColor(flag) {
         randomMats = [];
         for (let i = 0; i < maxNbrLevels+1; i++) {
             let mat = new THREE.MeshLambertMaterial(matArgs);
-            mat.color = getRandomBrightColor();
+            mat.color = getRandomColor(0.5, 0.4, 0.6);
             randomMats.push(mat);
         }
     }
