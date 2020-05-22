@@ -21,9 +21,6 @@ function createScene() {
     scene.add(mesh);
     geom = new THREE.SphereGeometry(3.5, 16, 16);
     scene.add(new THREE.Mesh(geom, matPhong));
-
-//    updateShading(controls.shading);
-
     let sunMat = new THREE.MeshBasicMaterial({color: 'yellow'});
     let sunGeom = new THREE.SphereGeometry(0.5, 12, 12);
     sun = new THREE.Mesh(sunGeom, sunMat);
@@ -92,11 +89,11 @@ function initGUI() {
     gui.add(controls, 'transx', -20.0, 20.0).step(0.5);
     gui.add(controls, 'transy', 0.0, 20.0).step(0.5);
     gui.add(controls, 'transz', -20.0, 20.0).step(0.5);
-    gui.add(controls, 'ambient', 0.0, 1.0).step(0.1).onChange(update);
-    gui.add(controls, 'spot', 0.0, 1.0).step(0.1).onChange(update);
-    gui.add(controls, 'shininess', 1, 100).step(1).onChange(update);
-    gui.addColor(controls, 'color');
-    gui.addColor(controls, 'specular');
+    gui.add(controls, 'ambient', 0.0, 1.0).name('ambient brightness').step(0.1).onChange(update);
+    gui.add(controls, 'spot', 0.0, 1.0).name('diffuse brightness').step(0.1).onChange(update);
+    gui.add(controls, 'shininess', 1, 120).step(1).onChange(update);
+    gui.addColor(controls, 'color').name('diffuse color');
+    gui.addColor(controls, 'specular').name('specular color');
 }
 
 function update() {
