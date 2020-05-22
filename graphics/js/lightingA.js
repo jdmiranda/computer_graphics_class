@@ -60,6 +60,7 @@ function render() {
     sun.position.y = controls.transy;
     sun.position.z = controls.transz;
     matPhong.color = new THREE.Color(controls.color);
+    matPhong.specular = new THREE.Color(controls.specular);
     cameraControls.update(delta);
 	renderer.render(scene, camera);
 }
@@ -100,7 +101,6 @@ function update() {
     ambientLight.intensity = controls.ambient;
     light.intensity = controls.spot;
     matPhong.shininess = controls.shininess;
-    matPhong.specular = new THREE.Color(controls.specular);
 }
 
 
