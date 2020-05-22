@@ -89,8 +89,8 @@ function initGUI() {
     gui.add(controls, 'transx', -20.0, 20.0).step(0.5);
     gui.add(controls, 'transy', 0.0, 20.0).step(0.5);
     gui.add(controls, 'transz', -20.0, 20.0).step(0.5);
-    gui.add(controls, 'ambient', 0.0, 1.0).name('ambient brightness').step(0.1).onChange(update);
-    gui.add(controls, 'spot', 0.0, 1.0).name('diffuse brightness').step(0.1).onChange(update);
+    gui.add(controls, 'ambient', 0.0, 1.0).name('ambient intensity').step(0.1).onChange(update);
+    gui.add(controls, 'spot', 0.0, 1.0).name('diffuse intensity').step(0.1).onChange(update);
     gui.add(controls, 'shininess', 1, 120).step(1).onChange(update);
     gui.addColor(controls, 'color').name('diffuse color');
     gui.addColor(controls, 'specular').name('specular color');
