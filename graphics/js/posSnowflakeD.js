@@ -12,7 +12,7 @@ let clock = new THREE.Clock();
 let base, snowflake;
 let len = 1;
 let mat;
-let boxGeom, sphereGeom;
+let boxGeom, sphereGeom, octahedronGeom;
 
 function createScene() {
     let nbrLevels = controls.nbrLevels;
@@ -23,7 +23,7 @@ function createScene() {
     mat = new THREE.MeshLambertMaterial(matArgs);
     boxGeom = new THREE.BoxGeometry(len, len, len);
     sphereGeom = new THREE.SphereGeometry(len/2, 12, 12);
-    octahedronGeom = new THREE.OctahedronGeometry(len);
+    octahedronGeom = new THREE.OctahedronGeometry(len/2);
     base = new THREE.Mesh(boxGeom, mat);
     snowflake = makePosSnowflake(nbrLevels, 1.0, base, len);
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
