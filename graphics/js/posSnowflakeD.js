@@ -18,7 +18,7 @@ function createScene() {
     let nbrLevels = controls.nbrLevels;
     let color = new THREE.Color(controls.color);
     let opacity = controls.opacity;
-    let matArgs = {color: color, transparent: true, opacity: opacity, side: THREE.FrontSide};
+    let matArgs = {color: color, transparent: true, opacity: opacity, side: THREE.DoubleSide};
 
     mat = new THREE.MeshLambertMaterial(matArgs);
     boxGeom = new THREE.BoxGeometry(len, len, len);
@@ -105,7 +105,7 @@ var controls = new function() {
 
 function initGui() {
     var gui = new dat.GUI();
-    gui.add(controls, 'nbrLevels', 0, 5).step(1).onChange(update);
+    gui.add(controls, 'nbrLevels', 0, 5).name('level').step(1).onChange(update);
     gui.add(controls, 'opacity', 0.1, 1.0).step(0.1);
     gui.add(controls, 'offset', 0.5, 1.5).step(0.1).onChange(update);
     gui.addColor(controls, 'color');
@@ -123,10 +123,13 @@ function update() {
     let geom = null;
     switch (controls.shape) {
         case 'Sphere':  geom = sphereGeom;
+                        base.material.side = THREE.FrontSide;
                         break;
         case 'Box':   geom = boxGeom;
+                        base.material.side = THREE.DoubleSide;
                         break;
         case 'Octahedron': geom = octahedronGeom;
+                        base.material.side = THREE.DoubleSide;
                         break;
     }
     base.geometry = geom;
@@ -166,7 +169,7 @@ function init() {
     });
 
     camera = new THREE.PerspectiveCamera(45, canvasRatio, 0.01, 1000);
-    camera.position.set(0, 0, 6);
+    camera.position.set(0, 1, 6);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 }
