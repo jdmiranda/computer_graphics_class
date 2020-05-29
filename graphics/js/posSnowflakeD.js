@@ -95,25 +95,27 @@ function makeSixfoldSnowflake(level, offset, mesh, len, center) {
 
 var controls = new function() {
     this.nbrLevels = 2;
-    this.opacity = 1.0;
-    this.color = '#3366ff';
     this.offset = 1.0;
     this.shape = 'Box';
     this.awesome = false;
     this.center = true;
+    this.opacity = 1.0;
+    this.color = '#3366ff';
 }
 
 function initGui() {
     var gui = new dat.GUI();
     gui.add(controls, 'nbrLevels', 0, 5).name('level').step(1).onChange(update);
-    gui.add(controls, 'opacity', 0.1, 1.0).step(0.1);
     gui.add(controls, 'offset', 0.5, 1.5).step(0.1).onChange(update);
-    gui.addColor(controls, 'color');
     let objectTypes =  ['Box', 'Sphere', 'Octahedron'];
     let typeItem = gui.add(controls, 'shape', objectTypes);
     typeItem.onChange(update);
     gui.add(controls, 'awesome').onChange(update);
     gui.add(controls, 'center').onChange(update);
+    let f1 = gui.addFolder('Apperance');
+    f1.open();
+    f1.addColor(controls, 'color');
+    f1.add(controls, 'opacity', 0.1, 1.0).step(0.1);
 }
 
 
