@@ -209,7 +209,7 @@ function update() {
                                 break;
         case 'Octahedron':      currentGeom = octahedronGeom;
                                 break;
-        case 'icosahedron':     currentGeom = icosahedronGeom;
+        case 'Icosahedron':     currentGeom = icosahedronGeom;
                                 break;
         case 'Cuboctahedron':   currentGeom = cuboctahedron;
                                 break;
