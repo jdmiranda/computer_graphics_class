@@ -26,7 +26,7 @@ let clock = new THREE.Clock();
 let snowflake, currentGeom;
 let len = 1;
 let mat;
-let boxGeom, octahedronGeom, dodecahedronGeom, cuboctahedron, truncatedOctahedron, j16, j88;
+let boxGeom, tetrahedronGeom, octahedronGeom, dodecahedronGeom, icosahedronGeom, cuboctahedron, truncatedOctahedron, j16, j88;
 let wireframe;
 
 function createScene() {
@@ -37,8 +37,10 @@ function createScene() {
 
     mat = new THREE.MeshLambertMaterial(matArgs);
     boxGeom = new THREE.BoxGeometry(len, len, len);
+    tetrahedronGeom = new THREE.TetrahedronGeometry(len);
     octahedronGeom = new THREE.OctahedronGeometry(0.75 * len);
     dodecahedronGeom = new THREE.DodecahedronGeometry(0.75 * len);
+    icosahedronGeom = new THREE.IcosahedronGeometry(0.75 * len);
     cuboctahedron = generalGeometry(Cuboctahedron, 0.75 * len);
     truncatedOctahedron = generalGeometry(TruncatedOctahedron, 0.75 * len);
     j16 = generalGeometry(J16, 0.75 * len);
@@ -67,9 +69,6 @@ function makeSnowflake(level, scale, geom) {
             let root2 = new THREE.Object3D();
             let v2 = v.clone().multiplyScalar(tf);
             root2.position.set(v2.x, v2.y, v2.z);
-            // root2.translateX(v2.x);
-            // root2.translateY(v2.y);
-            // root2.translateZ(v2.z);
             root2.add(makeSnowflake(level-1, scale, geom));
             root.add(root2);
         }
@@ -77,7 +76,6 @@ function makeSnowflake(level, scale, geom) {
     }
 }
 
-// Need to fix this, to be called when controls.scale updates.
 function updateScale() {
     // traverse scene graph revising scale and translate of nodes
     let scale = controls.scale;
@@ -173,7 +171,7 @@ function initGui() {
     var gui = new dat.GUI();
     gui.add(controls, 'nbrLevels', 0, 4).name('level').step(1).onChange(update);
     gui.add(controls, 'scale', 0.1, 0.9).step(0.01).onChange(updateScale);
-    let objectTypes =  ['Box', 'Octahedron', 'Dodecahedron', 'Cuboctahedron', 'TruncatedOctahedron', 'Elongated Pentagonal Dipyramid', 'Sphenomegacorona'];
+    let objectTypes =  ['Cube', 'Tetrahedron', 'Octahedron', 'Dodecahedron', 'Icosahedron', 'Cuboctahedron', 'TruncatedOctahedron', 'Elongated Pentagonal Dipyramid', 'Sphenomegacorona'];
     let typeItem = gui.add(controls, 'shape', objectTypes);
     typeItem.onChange(update);
     let f1 = gui.addFolder('Appearance');
@@ -205,9 +203,13 @@ function update() {
     switch (controls.shape) {
         case 'Dodecahedron':    currentGeom = dodecahedronGeom;
                                 break;
-        case 'Box':             currentGeom = boxGeom;
+        case 'Cube':             currentGeom = boxGeom;
+                                break;
+        case 'Tetrahedron':     currentGeom = tetrahedronGeom;
                                 break;
         case 'Octahedron':      currentGeom = octahedronGeom;
+                                break;
+        case 'icosahedron':     currentGeom = icosahedronGeom;
                                 break;
         case 'Cuboctahedron':   currentGeom = cuboctahedron;
                                 break;
