@@ -18,10 +18,10 @@ let clock = new THREE.Clock();
 let subject = new MyUtils.Subject();
 
 let mat;
-let maxNbrPoles = 80;
+let maxNbrPoles = 100;
 let nbrPoles = 0;
-let initNbrPoles = 4;
-let roomSides = 40, roomHeight = 6;
+let initNbrPoles = 8;
+let roomSides = 80, roomHeight = 6;
 let poles = new THREE.Object3D();
 let lights;
 
@@ -49,7 +49,7 @@ function makeSpinningLights(n) {
     let root = new THREE.Object3D();
     for (let i = 0; i < n; i++) {
         let child = new THREE.Object3D();
-        child.rps = MyUtils.getRandomFloat(0.01, 0.1);
+        child.rps = MyUtils.getRandomFloat(0.005, 0.05);
         child.update = MyUtils.makeSpin(1);
         subject.register(child);
         root.add(child);
@@ -140,7 +140,7 @@ function createRandomCurvedPole(y1) {
     let x0 = MyUtils.getRandomFloat(0.1, 0.48);
     let x1 = MyUtils.getRandomFloat(0.52, 0.9);
     let X = MyUtils.getRandomInt(0, 1);
-    return createCurvedPole(x0, x1, y1, X);
+    return createCurvedPole(x0, x1, y1, X, 30);
 }
 
 
@@ -163,8 +163,8 @@ var controls = new function() {
 
 function initGui() {
     let gui = new dat.GUI();
-    gui.add(controls, 'nbrPoles', 1, maxNbrPoles).step(1).onChange(updatePoles);
-    gui.add(controls, 'nbrLights', 1, 8).step(1).onChange(updateLights);
+    gui.add(controls, 'nbrPoles', 1, maxNbrPoles).name('nbr pillars').step(1).onChange(updatePoles);
+    gui.add(controls, 'nbrLights', 1, 8).name('nbr lights').step(1).onChange(updateLights);
 }
 
 function updateLights() {
@@ -209,11 +209,11 @@ function init() {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     cameraControls = new FirstPersonControls(camera, renderer.domElement);
-    // cameraControls.lookSpeed = 0.4;
-    cameraControls.movementSpeed = 4;
-    cameraControls.noFly = true;
-    cameraControls.lookVertical = true;
-    cameraControls.constrainVertical = true;
+    cameraControls.lookSpeed = 0.02;
+    cameraControls.movementSpeed = 2;
+    // cameraControls.noFly = true;
+    cameraControls.lookVertical = false;
+    cameraControls.constrainVertical = false;
 }
 
 
