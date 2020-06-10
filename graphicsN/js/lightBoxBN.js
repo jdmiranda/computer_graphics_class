@@ -23,10 +23,11 @@ let nbrPoles = 0;
 let initNbrPoles = 4;
 let roomSides = 40, roomHeight = 6;
 let poles = new THREE.Object3D();
+let lights;
 
 
 function createScene() {
-    let matArgs = {side: THREE.DoubleSide};
+    let matArgs = {side: THREE.DoubleSide, shininess: 80};
     mat = new THREE.MeshPhongMaterial(matArgs);
 
     scene.add(createRoom(roomSides+10, roomHeight));
@@ -34,19 +35,32 @@ function createScene() {
         let pole = createRandomCurvedPole(roomHeight/2);
         addPole(pole);
     }
-    // we shall change lights later
-    let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
-    light.position.set(0, 0, 40);
-    let light2 = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
-    light2.position.set(0, 0, -40);
-    let ambientLight = new THREE.AmbientLight(0x333333);
-    scene.add(light);
-    scene.add(light2);
+    lights = makeSpinningLights(3);
+    scene.add(lights);
+    let ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(ambientLight);
     scene.add(poles);
 
-    let axes = new THREE.AxesHelper(10);
-    scene.add(axes);
+    // let axes = new THREE.AxesHelper(10);
+    // scene.add(axes);
+}
+
+function makeSpinningLights(n) {
+    let root = new THREE.Object3D();
+    for (let i = 0; i < n; i++) {
+        let child = new THREE.Object3D();
+        child.rps = MyUtils.getRandomFloat(0.01, 0.1);
+        child.update = MyUtils.makeSpin(1);
+        subject.register(child);
+        root.add(child);
+        let color = MyUtils.getRandomColor(0.5, 0.4, 0.6);
+        let light = new THREE.PointLight(color, 0.4, 1000);
+        let geom = new THREE.SphereGeometry(0.2);
+        light.add(new THREE.Mesh(geom, new THREE.MeshBasicMaterial({color: color})));
+        light.translateX(roomSides);
+        child.add(light);
+    }
+    return root;
 }
 
 function createRoom(sides, height) {
@@ -144,11 +158,19 @@ function linspace(a, b, n) {
 
 var controls = new function() {
     this.nbrPoles = initNbrPoles;
+    this.nbrLights = 3;
 }
 
 function initGui() {
     let gui = new dat.GUI();
     gui.add(controls, 'nbrPoles', 1, maxNbrPoles).step(1).onChange(updatePoles);
+    gui.add(controls, 'nbrLights', 1, 8).step(1).onChange(updateLights);
+}
+
+function updateLights() {
+    scene.remove(lights);
+    lights = makeSpinningLights(controls.nbrLights);
+    scene.add(lights);
 }
 
 function updatePoles() {
