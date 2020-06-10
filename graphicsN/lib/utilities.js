@@ -40,9 +40,9 @@ let MyUtils = {
 
   makeSpin : function (indx, rps="rps") {
     return function (delta) {
-        vec = this.rotation.toVector3();
-        val = vec.getComponent(indx);
-        val += this.rpsToRadians(this[rps], delta);
+        let vec = this.rotation.toVector3();
+        let val = vec.getComponent(indx);
+        val += MyUtils.rpsToRadians(this[rps], delta);
         val %= 2 * Math.PI;
         vec.setComponent(indx, val);
         this.rotation.setFromVector3(vec);
