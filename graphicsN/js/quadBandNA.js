@@ -20,7 +20,7 @@ let y1 = 8;
 
 
 function createScene() {
-    let matArgs = {side: THREE.DoubleSide, color: 0x00ff00, shininess: 80};
+    let matArgs = {side: THREE.DoubleSide, color: 0x1562c9, specular: 0xFF9999, shininess: 80};
     mat = new THREE.MeshPhongMaterial(matArgs);
     band = createBand();
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
@@ -59,15 +59,6 @@ function createQuadBandGeometry(x1, y1, X, density=100, segments=12) {
 
 
 
-// function linspace(a, b, n) {
-//     if (b <= a) throw "b must be greater than a";
-//     if (n < 2) throw "n must be greater than 1"
-//     let res = [];
-//     let inc = (b - a) / (n - 1);
-//     for (let i = 0; i < n; i++)
-//         res.push(a + i * inc);
-//     return res;
-// }
 
 function createBand() {
     let x1 = controls.x1;
