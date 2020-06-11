@@ -21,7 +21,7 @@ let mat;
 let maxNbrPoles = 120;
 let nbrPoles = 0;
 let initNbrPoles = 8;
-let roomSides = 100, roomHeight = 8;
+let roomSides = 120, roomHeight = 8;
 let poles = new THREE.Object3D();
 let lights;
 
@@ -40,9 +40,6 @@ function createScene() {
     let ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(ambientLight);
     scene.add(poles);
-
-    // let axes = new THREE.AxesHelper(10);
-    // scene.add(axes);
 }
 
 function makeSpinningLights(n) {
@@ -104,31 +101,32 @@ function createPole() {
     return pole;
 }
 
+
+
 // Three points on quadratic curve f:Y->X in xy-plane are 
-// (x0,0), (x1,y1), (x1,-y1) where x0 > 0 and x1 > x0. 
+// (0,0), (x1,y1), (x1,-y1) where x1 > 0.
 // Construct a lathe on n samples on [-y1,y1] around the
-// axis x = X where X < x0 (for a concave pillar)
-// or X > x1 for a convex pillar
+// axis x = X if X < 0 for a concave band.
+// or X = X + x1 if X > 0 for a convex band
 // Function has form
-// x = ay^2 + x0, solved by a = (x1 - x0) / (y1)^2
-function createCurvedPoleGeometry(x0, x1, y1, X, n=100) {
-    let a = (x1 - x0) / (y1 * y1);
+// x = ay^2, solved by a = x1 / (y1)^2
+function createQuadBandGeometry(x1, y1, X, density=100, segments=12) {
+    let a = x1 / (y1 * y1);
     let f;
-    if (X < x0)
-        f = (y) => a * y * y + x0 - X;
+    if (X < 0)
+        f = (y) => a * y * y - X;
     else
-        f = (y) => -(a * y * y + x0 - X);
-    let ys = linspace(-y1, y1, n);
+        f = (y) => -(a * y * y - (X + x1));
+    let ys = MyUtils.linspace(-y1, y1, density);
     let xs = ys.map(f);
     let vecs = [];
     for (let i = 0; i < ys.length; i++)
         vecs.push(new THREE.Vector2(xs[i], ys[i]));
-    return new THREE.LatheGeometry(vecs);
+    return new THREE.LatheGeometry(vecs, segments);
 }
 
-
-function createCurvedPole(x0, x1, y1, X, n=100) {
-    let geom = createCurvedPoleGeometry(x0, x1, y1, X, n);
+function createCurvedPole(x1, y1, X, density=100, segments=12) {
+    let geom = createQuadBandGeometry(x1, y1, X, density, segments);
     let pole = new THREE.Mesh(geom, mat);
     let x = MyUtils.getRandomInt(-roomSides/2, roomSides/2);
     let z = MyUtils.getRandomInt(-roomSides/2, roomSides/2);
@@ -140,11 +138,9 @@ function createRandomCurvedPole(y1) {
     // let x0 = MyUtils.getRandomFloat(0.1, 0.48);
     // let x1 = MyUtils.getRandomFloat(0.52, 0.9);
     // let X = MyUtils.getRandomInt(0, 1);
-    let x0 = MyUtils.getRandomFloat(0.1, 0.95);
-    let x1 = MyUtils.getRandomFloat(1.05, 1.9);
-    let X = MyUtils.getRandomInt(0, 1);
-    X = (X === 1) ? 2 : 0;
-    return createCurvedPole(x0, x1, y1, X, 30);
+    let x1 = MyUtils.getRandomFloat(0.1, 4);
+    let X = MyUtils.getRandomFloat(-2.0, 2.0);
+    return createCurvedPole(x1, y1, X, 30, 12);
 }
 
 
@@ -213,8 +209,8 @@ function init() {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     cameraControls = new FirstPersonControls(camera, renderer.domElement);
-    cameraControls.lookSpeed = 0.01;
-    cameraControls.movementSpeed = 2;
+    cameraControls.lookSpeed = 0.02;
+    cameraControls.movementSpeed = 3;
     // cameraControls.noFly = true;
     cameraControls.lookVertical = false;
     cameraControls.constrainVertical = false;
