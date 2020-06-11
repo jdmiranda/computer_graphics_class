@@ -2,15 +2,15 @@ import * as THREE from '../build/three.module.js';
 
 let MyUtils = {
 
-  getRandomInt : function (min, max) {
+  getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }, 
 
-  getRandomFloat : function (min, max) {
+  getRandomFloat(min, max) {
     return Math.random() * (max - min) + min;
   }, 
 
-  getRandomPointOnSphere: function (rad) {
+  getRandomPointOnSphere(rad) {
     rad = rad || 1.0;
     var theta = Math.random() * 2 * Math.PI;
     var phi = Math.acos(2 * Math.random() - 1);
@@ -20,7 +20,7 @@ let MyUtils = {
     return new THREE.Vector3(x, y, z);
   }, 
 
-  getRandomColor : function (minSaturation, minLightness, maxLightness) {
+  getRandomColor(minSaturation, minLightness, maxLightness) {
     minSaturation = minSaturation || 0.3;
     minLightness = minLightness || 0.0;
     maxLightness = maxLightness || 1.0;
@@ -30,15 +30,15 @@ let MyUtils = {
     return new THREE.Color().setHSL(hue, sat, lit);
   },
 
-  rpsToRadians : function (rps, t) {
+  rpsToRadians(rps, t) {
     return 2.0 * Math.PI * rps * t;
   }, 
 
-  degreesToRadians : function (degrees) {
+  degreesToRadians(degrees) {
     return degrees * (Math.PI / 180);
   }, 
 
-  makeSpin : function (indx, rps="rps") {
+  makeSpin(indx, rps="rps") {
     return function (delta) {
         let vec = this.rotation.toVector3();
         let val = vec.getComponent(indx);
@@ -49,9 +49,19 @@ let MyUtils = {
     }
   },
 
-  mod : function (x, n) {
+  mod(x, n) {
     return (x % n + n) % n;
   }, 
+
+  linspace(a, b, n) {
+      if (b <= a) throw "b must be greater than a";
+      if (n < 2) throw "n must be greater than 1"
+      let res = [];
+      let inc = (b - a) / (n - 1);
+      for (let i = 0; i < n; i++)
+          res.push(a + i * inc);
+      return res;
+  },
 
   Subject : class {
     constructor() {
@@ -82,7 +92,7 @@ let MyUtils = {
     }
   },
 
-  makeAxes : function (params) {
+  makeAxes(params) {
     var theAxes = new THREE.Object3D();
 
     params = params || {};
@@ -148,7 +158,7 @@ let MyUtils = {
     return theAxes;
   },
 
-  makeAxis: function (params) {
+  makeAxis(params) {
     var theAxis = new THREE.Object3D();
 
     params = params || {};
