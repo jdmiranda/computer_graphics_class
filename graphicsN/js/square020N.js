@@ -1,6 +1,6 @@
 /***********
- * triangle015N.js
- * A simple triangle with orbit control
+ * square020N.js
+ * A simple square with orbit control
  * M. Laszlo
  * September 2019
  ***********/
@@ -15,22 +15,25 @@ let cameraControls;
 
 
 function createScene() {
-    let triangle = makeTriangle();
+    let square = makeSquare();
     let axes = new THREE.AxesHelper(10);
-    scene.add(triangle);
+    scene.add(square);
     scene.add(axes);
 }
 
 
-function makeTriangle() {
+function makeSquare() {
     let geom = new THREE.Geometry();
     let a = new THREE.Vector3(0, 0, 0);
-    let b = new THREE.Vector3(4, 0, 0);
+    let b = new THREE.Vector3(8, 0, 0);
     let c = new THREE.Vector3(0, 8, 0);
-    geom.vertices.push(a, b, c);
-    let face = new THREE.Face3(0, 1, 2);
-    geom.faces.push(face);
-    let mat = new THREE.MeshBasicMaterial({color: 0xFF00FF, side: THREE.DoubleSide});
+    let d = new THREE.Vector3(8, 8, 0);
+    geom.vertices.push(a, b, c, d);
+    let face1 = new THREE.Face3(0, 1, 2);
+    let face2 = new THREE.Face3(1, 2, 3);
+    geom.faces.push(face1, face2);
+    let args = {color: 0xFF00FF, side: THREE.DoubleSide};
+    let mat = new THREE.MeshBasicMaterial(args);
     let mesh = new THREE.Mesh(geom, mat);
     return mesh;
 }
