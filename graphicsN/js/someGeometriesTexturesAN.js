@@ -62,13 +62,13 @@ function updateObject(objectType) {
     if (currentMesh)
         scene.remove(currentMesh);
     switch (objectType) {
-        case 'Sphere':  geom = new THREE.SphereGeometry(10, 24, 24);
+        case 'Sphere':  geom = new THREE.SphereGeometry(10, 30, 30);
                         break;
         case 'Torus':   geom = new THREE.TorusGeometry(10, 3, 24, 36);
                         break;
         case 'Octahedron': geom = new THREE.OctahedronGeometry(8);
                         break;
-        case 'Knot':    geom = new THREE.TorusKnotGeometry(5, 2);
+        case 'Knot':    geom = new THREE.TorusKnotGeometry(5, 2, 100, 16);
                         break;
         case 'Icosahedron': geom = new THREE.IcosahedronGeometry(10);
                         break;

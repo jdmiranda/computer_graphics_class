@@ -24,7 +24,7 @@ let controls = new function() {
 }
 
 function createScene() {
-    currentMat = new THREE.MeshPhongMaterial({color: 0x1562c9,  specular: 0xFF9999, shininess: 10});
+    currentMat = new THREE.MeshLambertMaterial({color: 0x1562c9});
     wireframeMat = new THREE.MeshBasicMaterial({color: 'red', wireframe: true, wireframeLinewidth: 2});
     updateObject('Sphere');
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
@@ -55,13 +55,13 @@ function updateObject(objectType) {
     if (currentMesh)
         scene.remove(currentMesh);
     switch (objectType) {
-        case 'Sphere':  geom = new THREE.SphereGeometry(10, 24, 24);
+        case 'Sphere':  geom = new THREE.SphereGeometry(10, 30, 30);
                         break;
         case 'Torus':   geom = new THREE.TorusGeometry(10, 3, 24, 36);
                         break;
         case 'Octahedron': geom = new THREE.OctahedronGeometry(8);
                         break;
-        case 'Knot':    geom = new THREE.TorusKnotGeometry(5, 2);
+        case 'Knot':    geom = new THREE.TorusKnotGeometry(5, 2, 100, 16);
                         break;
         case 'Icosahedron': geom = new THREE.IcosahedronGeometry(10);
                         break;
@@ -69,7 +69,7 @@ function updateObject(objectType) {
                         break;
         case 'Dodecahedron': geom = new THREE.DodecahedronGeometry(10);
                         break;
-        case 'Cylinder': geom = new THREE.CylinderGeometry(5, 5, 20, 16);
+        case 'Cylinder': geom = new THREE.CylinderGeometry(5, 5, 20, 20);
                         break;
     }
     if (geom) {
