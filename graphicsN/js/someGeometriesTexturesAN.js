@@ -16,7 +16,7 @@ let cameraControls;
 let gui
 let currentMat, currentMesh;
 let currentObjectName;
-let texturesDir = '../assets/';
+let texturesDir = './assets/';
 let textureFiles = ['earth.jpg', 'jellyfish.jpg'];
 let textures;
 
