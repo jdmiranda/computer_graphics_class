@@ -17,7 +17,7 @@ let gui
 let currentMat, currentMesh;
 let currentObjectName;
 let texturesDir = './assets/';
-let textureFiles = ['earth.jpg', 'jellyfish.jpg'];
+let textureFiles = ['earth.jpg', 'jellyfish.jpg', 'manatee.gif', 'Boca.png'];
 let textures;
 
 let controls = new function() {
