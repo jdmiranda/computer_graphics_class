@@ -1,6 +1,6 @@
 /***********
- * someGeometriesAN.js
- * Some three.js geometries
+ * texturePlayAN.js
+ * Textures on a square
  * M. Laszlo
  * September 2019
  ***********/
@@ -13,27 +13,29 @@ import * as dat from '../lib/dat.gui.module.js';
 
 let camera, scene, renderer;
 let cameraControls;
-let gui
-let currentMat, currentMesh;
-let currentObjectName;
+let gui;
+let currentMat;
 let texturesDir = './assets/';
 let textureFiles = ['earth.jpg', 'jellyfish.jpg', 'manatee.gif', 'Boca.png', 'grid.jpg'];
 let textures;
 
 let controls = new function() {
-    this.type = 'Sphere';
     this.texture = 'earth';
+    this.wrapS = 1;
+    this.wrapT = 1;
+    this.offsetU = 0;
+    this.offsetV = 0;
+    this.uvSquare = false;
 }
 
 function createScene() {
-    textures = new Map();
-    for (let file of textureFiles) {
-        let texture = new THREE.TextureLoader().load(texturesDir + file);
-        let textureName = file.slice(0, -4);
-        textures.set(textureName, texture);
-    }
-    currentMat = new THREE.MeshLambertMaterial({map: textures.get('earth')});
-    updateObject('Sphere');
+    initTextures();
+    let matArgs = {map: textures.get('earth'), side: THREE.DoubleSide};
+    currentMat = new THREE.MeshStandardMaterial(matArgs);
+    let geom = new THREE.PlaneGeometry(10, 10);
+    let square = new THREE.Mesh(geom, currentMat);
+    square.position.set(5, 5, 0);
+    scene.add(square);
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
     light.position.set(20, 10, 40);
     let light2 = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
@@ -42,6 +44,20 @@ function createScene() {
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
+
+    let axes = new THREE.AxesHelper(10);
+    scene.add(axes);
+}
+
+function initTextures() {
+    textures = new Map();
+    for (let file of textureFiles) {
+        let texture = new THREE.TextureLoader().load(texturesDir + file);
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+        let textureName = file.slice(0, -4);
+        textures.set(textureName, texture);
+    }
 }
 
 
@@ -57,43 +73,27 @@ function render() {
 }
 
 
-function updateObject(objectType) {
-    let geom;     
-    if (currentMesh)
-        scene.remove(currentMesh);
-    switch (objectType) {
-        case 'Sphere':  geom = new THREE.SphereGeometry(10, 30, 30);
-                        break;
-        case 'Torus':   geom = new THREE.TorusGeometry(10, 3, 24, 36);
-                        break;
-        case 'Octahedron': geom = new THREE.OctahedronGeometry(8);
-                        break;
-        case 'Knot':    geom = new THREE.TorusKnotGeometry(5, 2, 100, 16);
-                        break;
-        case 'Icosahedron': geom = new THREE.IcosahedronGeometry(10);
-                        break;
-        case 'Cube': geom = new THREE.BoxGeometry(10, 10, 10);
-                        break;
-        case 'Dodecahedron': geom = new THREE.DodecahedronGeometry(10);
-                        break;
-        case 'Cylinder': geom = new THREE.CylinderGeometry(5, 5, 20, 16);
-                        break;
-    }
-    if (geom) {
-        currentMesh = new THREE.Object3D;
-        currentMesh.add(new THREE.Mesh(geom, currentMat));
-        scene.add(currentMesh);
-        currentObjectName = objectType;
-    }
-}
 
 function initGui() {
     gui = new dat.GUI();
-    let objectTypes =  ['Sphere', 'Torus', 'Cylinder', 'Cube', 'Octahedron', 'Icosahedron', 'Dodecahedron', 'Knot']
-    gui.add(controls, 'type', objectTypes).onChange(updateObject);
     let textureNames = textureFiles.map(file => file.slice(0, -4));
     gui.add(controls, 'texture', textureNames).onChange(updateTexture);
-    currentObjectName = 'Sphere';
+    gui.add(controls, 'wrapS', 0.1, 10).name('wrapU').step(0.1).onChange(updateTextureTransform);
+    gui.add(controls, 'wrapT', 0.1, 10).name('wrapV').step(0.1).onChange(updateTextureTransform);
+    gui.add(controls, 'offsetU', 0, 1).step(0.1).onChange(updateTextureTransform);
+    gui.add(controls, 'offsetV', 0, 1).step(0.1).onChange(updateTextureTransform);
+    gui.add(controls, 'uvSquare').onChange(updateUvSquare);
+}
+
+function updateTextureTransform() {
+    for (let val of textures.values()) {
+        val.repeat = new THREE.Vector2(controls.wrapS, controls.wrapT);
+        val.offset = new THREE.Vector2(controls.offsetU, controls.offsetV);
+        // val.needsUpdate = true;   // needed if we change wrapS or wrapT
+    }
+}
+
+function updateUvSquare(flag) {
 }
 
 function updateTexture(textureName) {
@@ -116,10 +116,11 @@ function init() {
     });
     let canvasRatio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera( 40, canvasRatio, 1, 1000);
-    camera.position.set(0, 0, 30);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    camera.position.set(5, 5, 20);
+    camera.lookAt(new THREE.Vector3(5, 5, 0));
 
     cameraControls = new OrbitControls(camera, renderer.domElement);
+    cameraControls.target = new THREE.Vector3(5, 5, 0);
     cameraControls.enableDamping = true; 
     cameraControls.dampingFactor = 0.04;
 }
