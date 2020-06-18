@@ -23,7 +23,7 @@ let cameraControls;
 let gui;
 let currentMat, replMat;
 let texturesDir = './assets/';
-let textureFiles = ['earth.jpg', 'jellyfish.jpg', 'manatee.gif', 'Boca.png', 'grid.jpg'];
+let textureFiles = ['earth.jpg', 'jellyfish.jpg', 'manatee.png', 'Boca.png', 'grid.jpg'];
 let textures, replTextures;
 let squareOutline, replicatePlane;
 let side = 10;
