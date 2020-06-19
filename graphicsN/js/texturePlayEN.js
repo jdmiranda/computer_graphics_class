@@ -178,7 +178,6 @@ function updateTextureTransform() {
         square.matrixAutoUpdate = false;
 
         centerSphere.children[0].position.set(3 * (centerX + offsetU), 3 * (centerY + offsetV), 0);
-        console.log(centerX)
 
         // if (clampU) {
         //     val.wrapS = THREE.ClampToEdgeWrapping;
