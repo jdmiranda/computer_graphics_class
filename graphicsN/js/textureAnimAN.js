@@ -33,7 +33,7 @@ let controls = new function() {
 
 function createScene() {
     initTextures();
-    currentMat = new THREE.MeshLambertMaterial({map: textures.get('stripes')});
+    currentMat = new THREE.MeshPhongMaterial({shininess: 80, map: textures.get('stripes')});
     updateObject('Sphere');
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
     light.position.set(20, 10, 40);
@@ -159,7 +159,7 @@ function init() {
 
     cameraControls = new OrbitControls(camera, renderer.domElement);
     cameraControls.enableDamping = true; 
-    cameraControls.dampingFactor = 0.04;
+    cameraControls.dampingFactor = 0.02;
 }
 
 function onWindowResize() {
