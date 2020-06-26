@@ -32,7 +32,7 @@ function createScene() {
     let matArgs = {color: 0xff0000, side: THREE.DoubleSide};
     let mat = new THREE.MeshLambertMaterial(matArgs);
     square = new THREE.Mesh(geom, mat);
-    matArgs.color = new THREE.Color(0x77ceeb);
+    matArgs.color = new THREE.Color(0x27aeab);
     mat = new THREE.MeshLambertMaterial(matArgs);
     geom = new THREE.CircleGeometry(theObjectDiameter / 2, 30);
     circle = new THREE.Mesh(geom, mat);
@@ -50,11 +50,8 @@ function createScene() {
 
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
     light.position.set(10, 20, 20);
-    let light2 = new THREE.PointLight(0xFFFFFF, 0.2, 1000 );
-    light2.position.set(10, 20, -20);
     let ambientLight = new THREE.AmbientLight(0x111111);
     scene.add(light);
-    scene.add(light2);
     scene.add(ambientLight);
 
     let axes = new THREE.AxesHelper(10);
@@ -123,8 +120,11 @@ function initGui() {
 }
 
 function updateObject(objectType) {
-    if (theObject)
+    let position = new THREE.Vector3();
+    if (theObject) {
+        position.copy(theObject.position);
         scene.remove(theObject);
+    }
     switch (objectType) {
         case 'circle':  theObject = makeFourObjects(circle, spaceSize);
                         break;
@@ -133,8 +133,10 @@ function updateObject(objectType) {
         case 'manatee':  theObject = makeFourObjects(manatee, spaceSize);
                         break;
     }
+    theObject.position.copy(position);
     scene.add(theObject);
 }
+
 
 function updateClipping(flag) {
     if (flag) renderer.clippingPlanes = clippingPlanes;
@@ -146,15 +148,6 @@ function updateVelocity() {
     let yps = controls.yps;
     theObject.userData.pps.set(xps, yps);
 }
-
-
-function genRandomColors() {
-    if (controls.randomColors)
-        for (let mat of materials) 
-            mat.color = MyUtils.getRandomColor(0.5, 0.4, 0.6);
-}
-
-
 
 
 function init() {
