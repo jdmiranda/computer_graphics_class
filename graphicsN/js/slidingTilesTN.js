@@ -19,7 +19,7 @@ let clock = new THREE.Clock();
 let subject = new MyUtils.Subject();
 
 
-let spaceSize = new THREE.Vector2(10, 10);
+let spaceSize = new THREE.Vector2(14, 14);
 let theObject;
 let theObjectDiameter = 2.84;  // 2 * sqrt(2)
 let square, circle, manatee;
@@ -27,19 +27,12 @@ let clippingPlanes;
 
 
 function createScene() {
-
-    let geom = new THREE.PlaneGeometry(theObjectDiameter, theObjectDiameter);
-    let matArgs = {color: 0xff0000, side: THREE.DoubleSide};
-    let mat = new THREE.MeshLambertMaterial(matArgs);
-    square = new THREE.Mesh(geom, mat);
-    matArgs.color = new THREE.Color(0x27aeab);
-    mat = new THREE.MeshLambertMaterial(matArgs);
-    geom = new THREE.CircleGeometry(theObjectDiameter / 2, 30);
-    circle = new THREE.Mesh(geom, mat);
+    square = makeSquare(theObjectDiameter);
+    circle = makeCircle(theObjectDiameter / 2);
     let filename = './assets/manatee.png';
     let texture = new THREE.TextureLoader().load(filename);
-    matArgs = {map: texture};
-    mat = new THREE.MeshLambertMaterial(matArgs);
+    let matArgs = {map: texture};
+    let mat = new THREE.MeshLambertMaterial(matArgs);
     manatee = new THREE.Mesh(square.geometry, mat);
 
     theObject = makeFourObjects(square, spaceSize);
@@ -60,11 +53,39 @@ function createScene() {
 
 function makeFloor(spaceSize) {
     let geom = new THREE.PlaneGeometry(spaceSize.x, spaceSize.y);
-    let matArgs = {color: 0xc0c0c0};
+    let matArgs = {color: 0xc0c0c0, side: THREE.DoubleSide};
     let mat = new THREE.MeshLambertMaterial(matArgs);
     let floor = new THREE.Mesh(geom, mat);
     floor.translateZ(-0.01);
     return floor;
+}
+
+function makeSquare(size) {
+    let geom = new THREE.PlaneGeometry(size, size, 2, 2);
+    let faces = geom.faces;
+    for (let i = 0; i < 8; i += 2) {
+        let color = MyUtils.getRandomColor(0.5, 0.4, 0.6);
+        faces[i].color = faces[i+1].color = color;
+    }
+    let matArgs = {vertexColors: THREE.FaceColors};
+    let mat = new THREE.MeshLambertMaterial(matArgs);
+    return new THREE.Mesh(geom, mat);
+}
+
+function makeCircle(size) {
+    let n = 40;
+    let n4 = n / 4;
+    let geom = new THREE.CircleGeometry(size, n);
+    let faces = geom.faces;
+    for (let i = 0; i < n; i += n4) {
+        let color = MyUtils.getRandomColor(0.5, 0.4, 0.6);
+        for (let j = 0; j < n4; j++) {
+            faces[i+j].color = color;
+        }   
+    }
+    let matArgs = {vertexColors: THREE.FaceColors};
+    let mat = new THREE.MeshLambertMaterial(matArgs);
+    return new THREE.Mesh(geom, mat);
 }
 
 let xLimit = (spaceSize.x + theObjectDiameter) / 2;
@@ -114,8 +135,8 @@ function initGui() {
     var gui = new dat.GUI();
     let objectTypes =  ['square', 'circle', 'manatee'];
     gui.add(controls, 'type', objectTypes).onChange(updateObject);
-    gui.add(controls, 'xps', -2.0, 2.0).step(0.01).onChange(updateVelocity);
-    gui.add(controls, 'yps', -2.0, 2.0).step(0.01).onChange(updateVelocity);
+    gui.add(controls, 'xps', -3.0, 3.0).step(0.01).onChange(updateVelocity);
+    gui.add(controls, 'yps', -3.0, 3.0).step(0.01).onChange(updateVelocity);
     gui.add(controls, 'clip').onChange(updateClipping);
 }
 
@@ -171,7 +192,7 @@ function init() {
     });
     let canvasRatio = window.innerWidth / window.innerHeight;
     camera = new THREE.PerspectiveCamera( 40, canvasRatio, 1, 1000);
-    camera.position.set(0, 0, 14);
+    camera.position.set(0, 0, 24);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     cameraControls = new OrbitControls(camera, renderer.domElement);
