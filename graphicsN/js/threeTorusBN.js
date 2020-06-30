@@ -82,17 +82,24 @@ function makeCube(sizex, sizey, sizez) {
 }
 
 
+
 function makeSphere(rad, hsegs, vsegs) {
-    //  (vseg-2) horizontal segments of rectangles, so hseg*(vseg-2)*2 triangles, plus
-    //  2*hseg triangles top and bottom (attaching to north and south poles)
-    // total: 2*hseg(vseg-1) triangles
+    // vsegs a multiple of 4
     let geom = new THREE.SphereGeometry(rad, hsegs, vsegs);
     let faces = geom.faces;
     let nbrFaces2 = faces.length / 2;
     for (let i = 0; i < 2; i++) {
-        let color = MyUtils.getRandomColor(0.5, 0.4, 0.6);
-        for (let j = 0; j < nbrFaces2; j++) {
-            faces[j + i * nbrFaces2].color = color;
+        let colors = [0, 1].map(v => MyUtils.getRandomColor(0.5, 0.4, 0.6));
+        for (let j = 0; j < nbrFaces2; j += 2) {
+            let indx = j + i * nbrFaces2;
+            faces[indx].color = faces[indx+1].color = colors[(j/2) % 2];
+        }
+        if (i === 0) { // south pole triangles
+            for (let j = 0; j < hsegs; j++)
+                faces[j].color = colors[j % 2];
+        } else { // north pole triangles
+            for (let j = faces.length - hsegs; j < faces.length; j++)
+                faces[j].color = colors[j % 2];
         }
     }
     let mat = new THREE.MeshLambertMaterial({vertexColors: THREE.FaceColors})
