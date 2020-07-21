@@ -125,7 +125,7 @@ function updateBall() {
         scene.add(ball);
     } else {
         scene.remove(ball);
-        subject.unregister(ball);9
+        subject.unregister(ball);
     }
 }
 

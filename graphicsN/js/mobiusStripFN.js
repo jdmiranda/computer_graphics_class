@@ -1,5 +1,5 @@
 /***********
- * mobiusStripDN.js
+ * mobiusStripFN.js
  * M. Laszlo
  * July 2020
  ***********/
@@ -42,9 +42,6 @@ function createScene() {
     scene.add(light2);
     scene.add(light3);
     scene.add(ambientLight);
-
-    // let axes = new THREE.AxesHelper(10);
-    // scene.add(axes);
 }
 
 const zAxis = new THREE.Vector3(0, 0, 1);
@@ -127,7 +124,7 @@ function updateBall() {
         scene.add(ball);
     } else {
         scene.remove(ball);
-        subject.unregister(ball);9
+        subject.unregister(ball);
     }
 }
 
