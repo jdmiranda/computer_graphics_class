@@ -19,13 +19,13 @@ let subject = new MyUtils.Subject();
 
 let radius = 12;
 let mobiusHeight = 6;
-let heightSegments = 16;
-let nbrSegments = 800;
+let heightSegments = 14;
+let nbrSegments = 600;
 let mobius;
 let nbrTwists = 1;
 let ball;
 let ballRadius = 0.5;
-let mepsilon = 0.0001, bepsilon = 0.05;
+let mepsilon = 0.001, bepsilon = 0.05;
 
 function createScene() {
     ball = makeBall(ballRadius);
