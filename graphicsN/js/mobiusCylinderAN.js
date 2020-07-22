@@ -25,7 +25,7 @@ let mobius;
 let nbrTwists = 1;
 let ball;
 let ballRadius = 0.5;
-let mepsilon = 0.0001, bepsilon = 0.05;
+let mepsilon = 0.001, bepsilon = 0.05;
 
 function createScene() {
     ball = makeBall(ballRadius);
