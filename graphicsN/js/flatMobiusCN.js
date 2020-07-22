@@ -61,11 +61,11 @@ function makeFace(size) {
     geom = new THREE.CircleGeometry(size/4, n);
     matArgs.color = 0x000000;
     let leftEye = new THREE.Mesh(geom, new THREE.MeshLambertMaterial(matArgs));
-    leftEye.position.set(-size/2, -size/2, 0.1);
+    leftEye.position.set(-size/2, -size/2, 0.2);
     root.add(leftEye);
     matArgs.color = 0xff0000;
     let rightEye = new THREE.Mesh(geom, new THREE.MeshLambertMaterial(matArgs));
-    rightEye.position.set(size/2, -size/2, 0.1);
+    rightEye.position.set(size/2, -size/2, 0.2);
     root.add(rightEye);
     return root;
 }
