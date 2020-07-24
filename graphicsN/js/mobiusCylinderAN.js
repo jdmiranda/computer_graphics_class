@@ -88,7 +88,7 @@ function makeBall(radius=0.5) {
 
 
 let controls = new function() {
-    this.type = 'Mobius strip';
+    this.type = 'Mobius band';
     this.nbrSegments = 40;
     this.color1 = '#1562c9';
     this.color2 = '#ffffff';
@@ -98,7 +98,7 @@ let controls = new function() {
 
 function initGui() {
     let gui = new dat.GUI();
-    let objectTypes = ['Mobius strip', 'cylinder'];
+    let objectTypes = ['Mobius band', 'cylinder'];
     let typeItem = gui.add(controls, 'type', objectTypes).onChange(updateMobius);
     gui.addColor(controls, 'color1').onChange(updateColor);
     gui.addColor(controls, 'color2').onChange(updateColor);
@@ -189,7 +189,7 @@ function makeMoveBall(radius, nbrTwists, ballRadius, height) {
 
 
 function updateMobius() {
-    let nbrTwists = controls.type === 'Mobius strip' ? 1 : 0;
+    let nbrTwists = controls.type === 'Mobius band' ? 1 : 0;
     let color1 = controls.color1;
     let color2 = controls.color2;
     scene.remove(mobius);
