@@ -20,14 +20,14 @@ let camera, scene, renderer;
 let cameraControls;
 let clock = new THREE.Clock();
 
-let spaceSide = 60;
+let spaceSide = 90;
 let spaceSize = new THREE.Vector3(spaceSide, spaceSide, spaceSide);
 let theObject;
-let nbrRepls = 17;
+let nbrRepls = 19;
 let fog;
 
 let maxNbrBeams = 6, initialNbrBeams = 1;
-let minBeamRadius = 1, maxBeamRadius = 8;
+let minBeamRadius = 2, maxBeamRadius = 12;
 let beams = new THREE.Object3D();
 let nbrBeams = 0;
 
@@ -45,12 +45,12 @@ function createScene() {
     light.position.set(100, 200, 200);
     let light2 = new THREE.PointLight(0xFFFFFF, 1.0, 10000);
     light2.position.set(-100, -200, -200);
-    let ambientLight = new THREE.AmbientLight(0x222222);
+    let ambientLight = new THREE.AmbientLight(0x444444);
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
 
-    fog = new THREE.Fog(0x000000, 10, 600);
+    fog = new THREE.Fog(0x000000, 10, 850);
     scene.fog = fog;
 
     // let axes = new THREE.AxesHelper(10);
@@ -107,7 +107,7 @@ function makeRandomBeam() {
 function makeRandomStripMesh(nbrTwists, Width) {
     let width = Width ? Width : MyUtils.getRandomFloat(minBeamRadius, maxBeamRadius);
     let ntwists = nbrTwists? nbrTwists : MyUtils.getRandomInt(0, 5);
-    let geom = makeStripGeometry(width, ntwists, spaceSide, 40, 2);
+    let geom = makeStripGeometry(width, ntwists, spaceSide, 30, 2);
     let matArgs1 = {side: THREE.FrontSide, shininess:50, color: MyUtils.getRandomColor(0.5, 0.4, 0.6)};
     let mat1 = new THREE.MeshPhongMaterial(matArgs1);
     let mesh1 = new THREE.Mesh(geom, mat1);
@@ -191,12 +191,12 @@ function initGui() {
     gui.add(controls, 'speed').name('warp speed').onChange(updateSpeed);
 }
 
-let movementSpeed = 2;
+let movementSpeed = 20;
 
 function updateSpeed() {
     let fast = controls.speed;
-    if (fast) cameraControls.movementSpeed = 20;
-    else cameraControls.movementSpeed = 2;
+    if (fast) cameraControls.movementSpeed = 8 * movementSpeed;
+    else cameraControls.movementSpeed = movementSpeed;
 }
 
 function updateBeams() {
