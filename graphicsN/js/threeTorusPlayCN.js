@@ -41,9 +41,9 @@ function createScene() {
     theObject = makeReplObjects(beams, spaceSize, nbrRepls, false);
     scene.add(theObject); 
        
-    let light = new THREE.PointLight(0xFFFFFF, 1.0, 10000);
+    let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000000);
     light.position.set(100, 200, 200);
-    let light2 = new THREE.PointLight(0xFFFFFF, 1.0, 10000);
+    let light2 = new THREE.PointLight(0xFFFFFF, 1.0, 1000000);
     light2.position.set(-100, -200, -200);
     let ambientLight = new THREE.AmbientLight(0x444444);
     scene.add(light);
