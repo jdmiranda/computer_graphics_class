@@ -1,27 +1,22 @@
 
-let camera, scene, renderer;
-let cameraControls;
+let camera, scene, renderer, cameraControls, root, sphereRadius;
 let clock = new THREE.Clock();
-let root = null, sphereRadius;
 
-
-
-function createSceneA() {
+function createScene() {
     sphereRadius = 10;
     nbrBursts = 360;
     maxRays = 100;
     maxRad = 1;
-    root = starburstsOnSphereA(nbrBursts, sphereRadius, maxRays, maxRad);
+    root = starburstsOnToroid(nbrBursts, sphereRadius, maxRays, maxRad);
     scene.add(root);
     let axes = new THREE.AxesHelper(10);
     scene.add(axes);
 }
 
-
-function starburstsOnSphereA(nbrBursts, sphereRadius, maxRays, maxRad) {
+function starburstsOnToroid(nbrBursts, sphereRadius, maxRays, maxRad) {
     let root = new THREE.Object3D();
     for (let i = 0; i < nbrBursts; i++) {
-        let mesh = starburstA(maxRays, maxRad);
+        let mesh = starburst(maxRays, maxRad);
         let p = getPoint(sphereRadius, i);
         mesh.position.set(p.x, p.y, p.z);
         root.add(mesh);
@@ -54,7 +49,6 @@ function getRandomPointOnToroid(){
   let root = new THREE.Object3D();
   for (let i = 0; i < nbrBursts; i++) {
       let mesh = starburstA(maxRays, maxRad);
-      //let p = getRandomPointOnSphere(sphereRadius);
       let p = getPoint(sphereRadius, i);
       mesh.position.set(p.x, p.y, p.z);
       root.add(mesh);
@@ -62,8 +56,8 @@ function getRandomPointOnToroid(){
   return root;
 }
 
-function starburstA(maxRays, maxRad) {
-    let rad = 1;   // had been rad = 10?????
+function starburst(maxRays, maxRad) {
+    let rad = 1;
     let origin = new THREE.Vector3(0, 0, 0);
     let innerColor = getRandomColor(0.8, 0.1, 0.8);
     let black = new THREE.Color(0x000000);
@@ -109,11 +103,9 @@ function update() {
     let sphereRad = controls.sphereRad;
     if (root)
         scene.remove(root);
-    root = starburstsOnSphereA(nbrBursts, sphereRad, maxRays, maxRad);
+    root = starburstsOnToroid(nbrBursts, sphereRad, maxRays, maxRad);
     scene.add(root);
 }
-
-
 
 function render() {
     let delta = clock.getDelta();
@@ -121,27 +113,21 @@ function render() {
     renderer.render(scene, camera);
 }
 
-
 function init() {
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
     let canvasRatio = canvasWidth / canvasHeight;
-
     scene = new THREE.Scene();
-
     renderer = new THREE.WebGLRenderer({antialias : true, preserveDrawingBuffer: true});
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
     renderer.setSize(canvasWidth, canvasHeight);
     renderer.setClearColor(0x000000, 1.0);
-
     camera = new THREE.PerspectiveCamera( 40, canvasRatio, 1, 1000);
     camera.position.set(0, 0, 40);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
-
 }
-
 
 function addToDOM() {
     let container = document.getElementById('container');
@@ -152,10 +138,8 @@ function addToDOM() {
     container.appendChild( renderer.domElement );
 }
 
-
-
 init();
-createSceneA();
+createScene();
 initGui();
 addToDOM();
 animate();

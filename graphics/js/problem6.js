@@ -2,16 +2,12 @@
 let camera, scene, renderer;
 let cameraControls;
 let clock = new THREE.Clock();
+let party;
 let torus,torus2, torus3, torus4, torus5;
 
 
 function createScene() {
-    torus = createTorus(1, 'purple');
-    torus2 = createTorus(2,'orange');
-    torus3 = createTorus(3,'green');
-    torus4 = createTorus(4,'white');
-    torus5 = createTorus(5,'red');
-    createSphere(1, 32, 32);
+    party = startTheParty(3);
     let light = new THREE.PointLight(0xFFFFFF, 1, 1000);
     light.position.set(0, 0, 10);
     let light2 = new THREE.PointLight(0xFFFFFF, 1, 1000);
@@ -20,13 +16,7 @@ function createScene() {
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
-    let axes = new THREE.AxesHelper(10);
-    scene.add(axes);
-    scene.add(torus);
-    scene.add(torus2);
-    scene.add(torus3);
-    scene.add(torus4);
-    scene.add(torus5);
+    scene.add(party);
 }
 
 
@@ -34,21 +24,33 @@ function degreeToRadian(degree){
   return degree * (Math.PI / 180);
 }
 
-function createSphere(radius, width, height){
-  var geometry = new THREE.SphereGeometry(radius, width, height);
-  var material = new THREE.MeshLambertMaterial( {color: 'red'} );
-  var sphere = new THREE.Mesh( geometry, material );
-  scene.add( sphere );
+function startTheParty(t){
+  let root = new THREE.Object3D();
+  let s = createSphere(1, 32, 32);
+  root.add(s);
+  for (let i = 0; i < t; i++){
+    let ring = createTorus(i+1);
+    root.add(ring);
+  }
+  return root;
 }
 
-function createTorus(radius, color){
-tube = .5;
-radialSegments = 16;
-tubularSegments = 50;
-var geometry = new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments);
-var material = new THREE.MeshLambertMaterial({color:color});
-var torus = new THREE.Mesh(geometry, material);
-return torus;
+function createSphere(radius, width, height){
+  var geometry = new THREE.SphereGeometry(radius, width, height);
+  var color = getRandomColor(0.8, 0.1, 0.8);
+  var material = new THREE.MeshLambertMaterial( {color: color} );
+  return new THREE.Mesh( geometry, material );
+}
+
+function createTorus(radius){
+  let color =  getRandomColor(0.8, 0.1, 0.8);
+  tube = .5;
+  radialSegments = 16;
+  tubularSegments = 50;
+  var geometry = new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments);
+  var material = new THREE.MeshLambertMaterial({color:color});
+  var torus = new THREE.Mesh(geometry, material);
+  return torus;
 }
 
 function animate() {
@@ -57,18 +59,16 @@ function animate() {
 }
 
 function animateGeometry(){
-  var speed = .03;
-  rotateGeometry(speed, torus);
-  rotateGeometry(-speed, torus2);
-  rotateGeometry(speed, torus3);
-  rotateGeometry(-speed, torus4);
-  rotateGeometry(speed, torus5);
+  for (let i = 1; i < party.children.length; i++){
+    let child = party.children[i];
+    rotateGeometry(i * .01, child)
+  }
 }
 
-function rotateGeometry(speed, geometry){
-  geometry.rotation.x -= speed * geometry.material.color.r ;
-  geometry.rotation.y -= speed * geometry.material.color.g ;
-  geometry.rotation.z -= speed * geometry.material.color.b ;
+function rotateGeometry(speed, child){
+  child.rotation.x -= speed;
+  child.rotation.y -= speed;
+  child.rotation.z -= speed ;
 }
 
 function render() {
@@ -76,6 +76,24 @@ function render() {
   cameraControls.update(delta);
   animateGeometry();
 	renderer.render(scene, camera);
+}
+
+var controls = new function() {
+    this.nbrLevels = 2;
+}
+
+function initGui() {
+    var gui = new dat.GUI();
+    gui.add(controls, 'nbrLevels', 0, 8).step(1).onChange(update);
+}
+
+function update() {
+  if (party){
+    scene.remove(party);
+  }
+  let n = controls.nbrLevels;
+  party = startTheParty(n);
+  scene.add(party);
 }
 
 
@@ -106,6 +124,7 @@ function addToDOM() {
 
 init();
 createScene();
+initGui();
 addToDOM();
 render();
 animate();

@@ -47,7 +47,6 @@ function animate() {
 
 var controls = new function() {
     this.nbrLevels = 2;
-    this.radius = 1;
 }
 
 function initGui() {

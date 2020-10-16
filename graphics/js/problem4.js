@@ -19,14 +19,11 @@ function createScene() {
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
-    let axes = new THREE.AxesHelper(10);
-    scene.add(axes);
 }
 
 function createHelix(object, n, radius, angle, dist){
   rotation = angle;
   for (let i = 1; i <= n; i++) {
-    console.log(rotation);
     x = radius * Math.cos(rotation);
     y = radius * Math.sin(rotation);
     thisDistance = (i * dist);
