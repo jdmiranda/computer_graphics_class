@@ -22,7 +22,6 @@ function starburstsOnSphereA(nbrBursts, sphereRadius, maxRays, maxRad) {
     let root = new THREE.Object3D();
     for (let i = 0; i < nbrBursts; i++) {
         let mesh = starburstA(maxRays, maxRad);
-        //let p = getRandomPointOnSphere(sphereRadius);
         let p = getPoint(sphereRadius, i);
         mesh.position.set(p.x, p.y, p.z);
         root.add(mesh);
@@ -88,26 +87,29 @@ function animate() {
 
 let controls = new function() {
     this.nbrBursts = 400;
-    this.burstRadius = 1.0;
     this.maxRays = 100;
+    this.maxRad = 1;
+    this.sphereRad = 10;
     this.Go = update;
 }
 
 function initGui() {
     let gui = new dat.GUI();
     gui.add(controls, 'nbrBursts', 5, 2000).step(5).name('Nbr of bursts');
-    gui.add(controls, 'burstRadius', 0.1, 5.0).name('Burst radius');
     gui.add(controls, 'maxRays', 5, 200).name('Max nbr of rays');
+    gui.add(controls, 'maxRad', 1, 5).name('Max radius');
+    gui.add(controls, 'sphereRad', 5, 20).name('Sphere radius');
     gui.add(controls, 'Go');
 }
 
 function update() {
     let nbrBursts = controls.nbrBursts;
-    let burstRadius = controls.burstRadius;
     let maxRays = controls.maxRays;
+    let maxRad = controls.maxRad;
+    let sphereRad = controls.sphereRad;
     if (root)
         scene.remove(root);
-    root = starburstsOnSphereA(nbrBursts, sphereRadius, maxRays, burstRadius);
+    root = starburstsOnSphereA(nbrBursts, sphereRad, maxRays, maxRad);
     scene.add(root);
 }
 

@@ -3,20 +3,17 @@ let camera, scene, renderer;
 let cameraControls;
 let clock = new THREE.Clock();
 
-
-let floorLength = 200;
-let floorWidth = 200;
+let floorLength = 100;
+let floorWidth = 100;
 
 function createScene() {
-
     nbrBoxes = 100;
     minSide = 5;
     maxSide = 20;
     minHeight = 5;
-    maxHeight = 60;
+    maxHeight = 30;
     createFloor(floorLength * 2, floorWidth * 2);
     randomBoxes(nbrBoxes, minSide, maxSide, minHeight, maxHeight);
-
     let light = new THREE.PointLight(0xFFFFFF, 1, 1000);
     light.position.set(0, 0, 10);
     let light2 = new THREE.PointLight(0xFFFFFF, 1, 1000);
@@ -50,7 +47,6 @@ function randomBoxes(nbrBoxes, minSide, maxSide, minHeight, maxHeight){
     var baseZ = getRndInteger(zmin, zmax);
     var color = new THREE.Color();
     color.setHSL(Math.random(), Math.random(0.8, 0.95), Math.random(0.3, 0.7));
-
     var geometry = new THREE.BoxGeometry(width,height,depth);
     var material = new THREE.MeshBasicMaterial({color: color, side: THREE.DoubleSide});
     material.opacity = 0.8;
@@ -64,30 +60,10 @@ function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min) ) + min;
 }
 
-function createHelix(object, n, radius, angle, dist){
-  rotation = angle;
-  for (let i = 1; i <= n; i++) {
-    console.log(rotation);
-    x = radius * Math.cos(rotation);
-    y = radius * Math.sin(rotation);
-    thisDistance = (i * dist);
-    var clone = object.clone();
-    clone.position.set(x,y,-thisDistance);
-    scene.add(clone);
-    rotation += angle;
-    twoPi = 2 * Math.PI;
-    if (rotation > twoPi){
-      rotation -= twoPi;
-    }
-  }
-  return object;
-}
-
 function animate() {
 	window.requestAnimationFrame(animate);
 	render();
 }
-
 
 function render() {
     let delta = clock.getDelta();
@@ -95,28 +71,21 @@ function render() {
 	renderer.render(scene, camera);
 }
 
-
 function init() {
 	let canvasWidth = window.innerWidth;
 	let canvasHeight = window.innerHeight;
 	let canvasRatio = canvasWidth / canvasHeight;
-
 	scene = new THREE.Scene();
-
 	renderer = new THREE.WebGLRenderer({antialias : true});
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
 	renderer.setSize(canvasWidth, canvasHeight);
 	renderer.setClearColor(0x000000, 1.0);
-
 	camera = new THREE.PerspectiveCamera(40, canvasRatio, 1, 1000);
-	camera.position.set(0, 0, 12);
+	camera.position.set(0, 400, 12);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
-
 	cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 }
-
-
 
 function addToDOM() {
 	let container = document.getElementById('container');
@@ -127,10 +96,8 @@ function addToDOM() {
 	container.appendChild( renderer.domElement );
 }
 
-
-
-	init();
-	createScene();
-	addToDOM();
-    render();
-	animate();
+init();
+createScene();
+addToDOM();
+render();
+animate();

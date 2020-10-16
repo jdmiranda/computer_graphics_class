@@ -8,7 +8,6 @@ function createScene() {
     let geom = new THREE.SphereGeometry(1,12,12);
     var mesh = new THREE.Mesh(geom, mat);
     let helix = createHelix(mesh, 49, 2, Math.PI/4, 0.5);
-
     mat.polygonOffset = true;
     mat.polygonOffsetUnits = 1;
     mat.polygonOffsetFactor = 1;
@@ -20,8 +19,6 @@ function createScene() {
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
-    //scene.add(pyramid);
-    //scene.add(helix);
     let axes = new THREE.AxesHelper(10);
     scene.add(axes);
 }
@@ -62,23 +59,17 @@ function init() {
 	let canvasWidth = window.innerWidth;
 	let canvasHeight = window.innerHeight;
 	let canvasRatio = canvasWidth / canvasHeight;
-
 	scene = new THREE.Scene();
-
 	renderer = new THREE.WebGLRenderer({antialias : true});
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
 	renderer.setSize(canvasWidth, canvasHeight);
 	renderer.setClearColor(0x000000, 1.0);
-
 	camera = new THREE.PerspectiveCamera(40, canvasRatio, 1, 1000);
 	camera.position.set(0, 0, 12);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
-
 	cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 }
-
-
 
 function addToDOM() {
 	let container = document.getElementById('container');
@@ -89,10 +80,8 @@ function addToDOM() {
 	container.appendChild( renderer.domElement );
 }
 
-
-
-	init();
-	createScene();
-	addToDOM();
-    render();
-	animate();
+init();
+createScene();
+addToDOM();
+render();
+animate();

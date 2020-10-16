@@ -45,13 +45,11 @@ function createTorus(radius, color){
 tube = .5;
 radialSegments = 16;
 tubularSegments = 50;
-  var geometry = new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments);
-  var material = new THREE.MeshLambertMaterial({color:color});
-  var torus = new THREE.Mesh(geometry, material);
-  return torus;
-  //scene.add(torus);
+var geometry = new THREE.TorusGeometry(radius, tube, radialSegments, tubularSegments);
+var material = new THREE.MeshLambertMaterial({color:color});
+var torus = new THREE.Mesh(geometry, material);
+return torus;
 }
-
 
 function animate() {
 	window.requestAnimationFrame(animate);
@@ -66,7 +64,6 @@ function animateGeometry(){
   rotateGeometry(-speed, torus4);
   rotateGeometry(speed, torus5);
 }
-
 
 function rotateGeometry(speed, geometry){
   geometry.rotation.x -= speed * geometry.material.color.r ;
@@ -86,23 +83,17 @@ function init() {
 	let canvasWidth = window.innerWidth;
 	let canvasHeight = window.innerHeight;
 	let canvasRatio = canvasWidth / canvasHeight;
-
 	scene = new THREE.Scene();
-
 	renderer = new THREE.WebGLRenderer({antialias : true});
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
 	renderer.setSize(canvasWidth, canvasHeight);
 	renderer.setClearColor(0x000000, 1.0);
-
 	camera = new THREE.PerspectiveCamera(40, canvasRatio, 1, 1000);
-	camera.position.set(0, 0, 12);
+	camera.position.set(0, 0, 20);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
-
 	cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
 }
-
-
 
 function addToDOM() {
 	let container = document.getElementById('container');
@@ -113,10 +104,8 @@ function addToDOM() {
 	container.appendChild( renderer.domElement );
 }
 
-
-
-	init();
-	createScene();
-	addToDOM();
-  render();
-	animate();
+init();
+createScene();
+addToDOM();
+render();
+animate();
