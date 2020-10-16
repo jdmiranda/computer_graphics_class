@@ -21,9 +21,10 @@ function createScene() {
     let matArgs = {color: color, transparent: true, opacity: opacity, side: THREE.DoubleSide};
 
     mat = new THREE.MeshLambertMaterial(matArgs);
+    mat.polygonOffset = true;
     boxGeom = new THREE.BoxGeometry(len, len, len);
     sphereGeom = new THREE.SphereGeometry(len/2, 12, 12);
-    octahedronGeom = new THREE.OctahedronGeometry(len/2);
+    octahedronGeom = new THREE.TetrahedronGeometry(len/2);
     base = new THREE.Mesh(boxGeom, mat);
     snowflake = makePosSnowflake(nbrLevels, 1.0, base, len);
     let light = new THREE.PointLight(0xFFFFFF, 1.0, 1000 );
@@ -85,7 +86,7 @@ function makeSixfoldSnowflake(level, offset, mesh, len, center) {
         root.add(root3);
         let sf = makePosSnowflake(level, offset, mesh, len);
         sf.position.y = offset * 1.5 * len;
-        root3.add(sf);        
+        root3.add(sf);
     }
     return base;
 }
@@ -137,8 +138,8 @@ function update() {
     base.geometry = geom;
     if (controls.awesome)
         snowflake = makeSixfoldSnowflake(controls.nbrLevels, controls.offset, base, len, controls.center);
-    else 
-        snowflake = makePosSnowflake(controls.nbrLevels, controls.offset, base, len);  
+    else
+        snowflake = makePosSnowflake(controls.nbrLevels, controls.offset, base, len);
     scene.add(snowflake);
 }
 
@@ -192,5 +193,3 @@ init();
 createScene();
 initGui();
 addToDOM();
-
-

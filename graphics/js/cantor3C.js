@@ -104,7 +104,7 @@ function update() {
         scene.remove(cantor);
     let f = null;
     switch (controls.type) {
-        case 'Sierpinski cube': 
+        case 'Sierpinski cube':
             f = retainSierpinskiCube;
             break;
         case 'Mosely snowflake':
@@ -117,7 +117,7 @@ function update() {
             f = retainSMSnowflake;
             break
     }
-    cantor = makeCantor3(f, controls.nbrLevels, mat, len);    
+    cantor = makeCantor3(f, controls.nbrLevels, mat, len);
     scene.add(cantor);
 }
 
@@ -171,5 +171,3 @@ init();
 createScene();
 initGui();
 addToDOM();
-
-

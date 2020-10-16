@@ -99,7 +99,7 @@ function update() {
     if (cantor)
         scene.remove(cantor);
     let f = controls.type === 'Sierpinski carpet' ? retainSierpinskiCarpet : retainCantor;
-    cantor = makeCantor(f, controls.nbrLevels, mat, len);    
+    cantor = makeCantor(f, controls.nbrLevels, mat, len);
     scene.add(cantor);
 }
 
@@ -153,5 +153,3 @@ init();
 createScene();
 initGui();
 addToDOM();
-
-

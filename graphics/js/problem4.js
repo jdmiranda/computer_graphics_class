@@ -1,24 +1,17 @@
-/***********
- * closedPyramid2.js
- * M. Laszlo
- * February 2018
- ***********/
 
 let camera, scene, renderer;
 let cameraControls;
 let clock = new THREE.Clock();
 
 function createScene() {
-    let pyramidGeom = createPyramid(18, 4, 4);
-    let color = new THREE.Color(1, 1, 0);
-    let mat = new THREE.MeshLambertMaterial({color: color, side: THREE.FrontSide});
+    let mat = new THREE.MeshLambertMaterial({color: 'blue'});
+    let geom = new THREE.SphereGeometry(1,12,12);
+    var mesh = new THREE.Mesh(geom, mat);
+    let helix = createHelix(mesh, 49, 2, Math.PI/4, 0.5);
+
     mat.polygonOffset = true;
     mat.polygonOffsetUnits = 1;
     mat.polygonOffsetFactor = 1;
-    // try side: THREE.FrontSide and THREE.Backside
-    let pyramid = new THREE.Mesh(pyramidGeom, mat);
-    let basicMat = new THREE.MeshBasicMaterial({color: 'red', wireframe: true, wireframeLinewidth: 2});
-    let pyramidWiremesh = new THREE.Mesh(pyramidGeom, basicMat);
     let light = new THREE.PointLight(0xFFFFFF, 1, 1000);
     light.position.set(0, 0, 10);
     let light2 = new THREE.PointLight(0xFFFFFF, 1, 1000);
@@ -27,40 +20,30 @@ function createScene() {
     scene.add(light);
     scene.add(light2);
     scene.add(ambientLight);
-    scene.add(pyramid);
-    scene.add(pyramidWiremesh);
+    //scene.add(pyramid);
+    //scene.add(helix);
+    let axes = new THREE.AxesHelper(10);
+    scene.add(axes);
 }
 
-function createPyramid(n, rad, len) {
-    let len2 = len / 2;
-    let geom = new THREE.Geometry();
-    // push n + 1 vertices
-    //  first the apex...
-    geom.vertices.push(new THREE.Vector3(0, len2, 0));
-    //  and then the vertices of the base
-    let inc = 2 * Math.PI / n;
-    for (let i = 0, a = 0; i < n; i++, a += inc) {
-        let cos = Math.cos(a);
-        let sin = Math.sin(a);
-        geom.vertices.push(new THREE.Vector3(rad * cos, -len2, rad * sin));
+function createHelix(object, n, radius, angle, dist){
+  rotation = angle;
+  for (let i = 1; i <= n; i++) {
+    console.log(rotation);
+    x = radius * Math.cos(rotation);
+    y = radius * Math.sin(rotation);
+    thisDistance = (i * dist);
+    var clone = object.clone();
+    clone.position.set(x,y,-thisDistance);
+    scene.add(clone);
+    rotation += angle;
+    twoPi = 2 * Math.PI;
+    if (rotation > twoPi){
+      rotation -= twoPi;
     }
-    // push the n triangular faces...
-    for (let i = 1; i < n; i++) {
-        let face = new THREE.Face3(i+1, i, 0);
-        geom.faces.push(face);
-    }
-    let face = new THREE.Face3(1, n, 0);
-    geom.faces.push(face);
-    // and then push the n-2 faces of the base
-    for (let i = 2; i < n; i++) {
-        let face = new THREE.Face3(i, i+1, 1);
-        geom.faces.push(face);
-    }
-    // set face normals and return the geometry
-    geom.computeFaceNormals();
-    return geom;
+  }
+  return object;
 }
-
 
 function animate() {
 	window.requestAnimationFrame(animate);

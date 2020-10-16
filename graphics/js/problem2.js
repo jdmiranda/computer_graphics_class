@@ -1,17 +1,12 @@
-/***********
- * closedPyramid2.js
- * M. Laszlo
- * February 2018
- ***********/
 
 let camera, scene, renderer;
 let cameraControls;
 let clock = new THREE.Clock();
 
 function createScene() {
-    let pyramidGeom = createPyramid(18, 4, 4);
+    let pyramidGeom = createCylinder(8, 2, 2);
     let color = new THREE.Color(1, 1, 0);
-    let mat = new THREE.MeshLambertMaterial({color: color, side: THREE.FrontSide});
+    let mat = new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide});
     mat.polygonOffset = true;
     mat.polygonOffsetUnits = 1;
     mat.polygonOffsetFactor = 1;
@@ -29,38 +24,44 @@ function createScene() {
     scene.add(ambientLight);
     scene.add(pyramid);
     scene.add(pyramidWiremesh);
+    let axes = new THREE.AxesHelper(10);
+    scene.add(axes);
 }
 
-function createPyramid(n, rad, len) {
-    let len2 = len / 2;
-    let geom = new THREE.Geometry();
-    // push n + 1 vertices
-    //  first the apex...
-    geom.vertices.push(new THREE.Vector3(0, len2, 0));
-    //  and then the vertices of the base
-    let inc = 2 * Math.PI / n;
-    for (let i = 0, a = 0; i < n; i++, a += inc) {
-        let cos = Math.cos(a);
-        let sin = Math.sin(a);
-        geom.vertices.push(new THREE.Vector3(rad * cos, -len2, rad * sin));
-    }
-    // push the n triangular faces...
-    for (let i = 1; i < n; i++) {
-        let face = new THREE.Face3(i+1, i, 0);
-        geom.faces.push(face);
-    }
-    let face = new THREE.Face3(1, n, 0);
-    geom.faces.push(face);
-    // and then push the n-2 faces of the base
-    for (let i = 2; i < n; i++) {
-        let face = new THREE.Face3(i, i+1, 1);
-        geom.faces.push(face);
-    }
-    // set face normals and return the geometry
-    geom.computeFaceNormals();
-    return geom;
-}
+function createCylinder(n, rad, len) {
+  let len2 = len / 2;
+  let geom = new THREE.Geometry();
 
+  let inc = 2 * Math.PI / n;
+  for (let i = 0, a = 0; i < n; i++, a += inc) {
+      let cos = Math.cos(a);
+      let sin = Math.sin(a);
+      geom.vertices.push(new THREE.Vector3(rad * cos, -len2, rad * sin));
+      geom.vertices.push(new THREE.Vector3(rad * cos, len2, rad * sin));
+  }
+
+  let vertCount = (n *2) - 2 ;
+  // push the n triangular faces...
+  for (let i = 0; i < vertCount; i++) {
+    if ((i %2) ==0){
+      let face = new THREE.Face3(i, i+2, 0);
+      let face1 = new THREE.Face3(i, i+1, i+3);
+      let face2 = new THREE.Face3(i, i+2, i+3);
+      geom.faces.push(face,face1,face2);
+    } else {
+      let face4 = new THREE.Face3(i,i+2,1)
+      geom.faces.push(face4);
+    }
+  }
+  //last face for the side
+   let face2 = new THREE.Face3(0,1,vertCount);
+   let face3 = new THREE.Face3(1,vertCount,vertCount+1);
+   geom.faces.push(face2,face3);
+
+  // set face normals and return the geometry
+  geom.computeFaceNormals();
+  return geom;
+}
 
 function animate() {
 	window.requestAnimationFrame(animate);

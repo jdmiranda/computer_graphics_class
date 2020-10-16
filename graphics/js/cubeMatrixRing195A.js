@@ -41,6 +41,7 @@ function createRing(obj, n, t) {
     return root;
 }
 
+
 function createScene() {
     cubesPerSide = 11;
     let cubeMatrix = createCubeMatrix(cubesPerSide, cubesPerSide, cubesPerSide);
@@ -64,6 +65,8 @@ var controls = new function() {
 function animate() {
     window.requestAnimationFrame(animate);
     render();
+    cubeRing.children.forEach ( child => (
+      child.rotation.x += .01)    )
 }
 
 
